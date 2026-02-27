@@ -4,6 +4,7 @@ const todoListUl = document.getElementById("todoList")
 const remaining = document.getElementById("itemsLeft")
 const clearCompletedBtn = document.getElementById("clearCompletedBtn")
 const filterBtn = document.querySelectorAll(".filter-btn")
+let filtervalue = "all";
 
 
 let todoText; // This should be populated when the user clicks on Add button
@@ -16,7 +17,7 @@ if (todosString) {
 }
 
 filterBtn.forEach((item) =>{
-   let filtervalue ="all";
+   
    item.addEventListener('click',(e)=>{
     
     // remove active class from all buttons first
@@ -26,7 +27,7 @@ filterBtn.forEach((item) =>{
     e.target.classList.add("active")
     
     // convert to lowercase to match your conditions
-    filtervalue = e.target.innerHTML.toLowerCase()
+   filtervalue = e.target.dataset.filter
     
     // re-render todos based on filter
     populateTodos(filtervalue)
@@ -91,15 +92,15 @@ const populateTodos = (filtervalue ="all") => {    // filter sets the default va
     // Handle the delete buttons  
   deleteBtns.forEach((element) => {
         element.addEventListener("click", (e) => {
-            const confirmation = confirm("Do you want to delete this todo") 
-            if(confirmation){ 
+
+            
                 todos = todos.filter((todo) => {
                     return (todo.id) !== (e.target.parentNode.id)
                 })
                 remaining.innerHTML = todos.filter((item)=>{return item.isCompleted!=true}).length + " items left";
                 localStorage.setItem("todos", JSON.stringify(todos))
                 populateTodos(filtervalue)
-            }
+            
         })
     })
     
